@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  api:          #Images selber gebaut deswegen das build und wo das Dockerfile
+    build: ./api
+    ports:     #Ports definieren
+      - 3000:3000
+  ui:         #Da nicht selber gebaut geben wir ein Image
+    image: nginx:${NGINX_VERSION}    #NGINX_VERSION int in der .env definiert
+    ports:     #Ports definieren
+      - 4000:80
+    volumes:  #mout Volumes
+      - ./ui:/usr/share/nginx/html:ro
+    depends_on: #Von welchen Container hängt dieser Ab, er braucht frontend
+      - api
+

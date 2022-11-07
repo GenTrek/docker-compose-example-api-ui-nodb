@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Docker-Compose Demo</title>
+  <!-- Etwas stylen-->
+  <style>
+    body{
+      width: 100vw;
+      height: 100vh ;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+    #now{
+    font-family: sans-serif;
+    font-size: 2em ;
+    }
+  </style>
+</head>
+<body>
+<div id="now"></div>
+<script>
+  <!-- Holen_uns_die_Referenz_auf_unser_div_mit_der_id_now -->
+  const $now=document.querySelector('#now');
+  <!-- das soll sekündlich (1000 ms) ausgeführt werde -->
+  setInterval(async ()=>{
+    <!-- rufen den Backend auf -->
+    const response=await fetch('http://localhost:3000');
+    <!-- nehme nur die now aus dem json -->
+    const {now}= await response.json();
+    $now.innerText = new Date(now);
+  },1000)
+
+</script>
+</body>
+</html>

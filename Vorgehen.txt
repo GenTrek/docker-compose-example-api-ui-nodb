@@ -1,0 +1,44 @@
+2 Ordner erstelle api & ui
+und Docker yml File erstellen mit dem Namen docker-compose.yml
+------------------------API------------------
+-Anlegen des package.json Files
+-im Terminal  im Verzeichnis api (ins api Ordner wechseln) --> npm install cors express flaschenpost
+-Danach sind im package.json folgende Dependencies:
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "flaschenpost": "^5.1.1"
+-app.js anlegen und definieren
+-Zum Ausprobieren ob der Server läuft im Terminal --> node app.js
+-Dockerfile für die api erstellen
+-.dockerignore File anlegen, da der Ordner node_modules nicht kopiert werden sollte
+        sondern von node selber erzeugt auf dem Container. Auch sinnvoll  git und test Ordner ausschließen.
+-Image erstellen --> docker build -t api .
+-Prüfen ob da ist --> docker images
+-Im Hintergrund starten --> docker run -d --init -p 3000:3000 --name api api  <- das letze ist der Image Name
+-Prüfen läuft? -> docker ps
+-Prüfen erreichbar? --> curl http://localhost:3000
+->Api erfolgreich aufräumen und zum weiteren arbeiten löschen
+    ->docker kill api && docker rm api
+-----------------------UI---------------------------
+-index.html Seite erstellen im UI Ordner
+-in den Projekt home Ordner wechseln NICHT in den UI  (falls notwendig mit cd ..)
+-API starten -->docker run -d --init -p 3000:3000 --name api api
+-Image bauen --> docker run -d -p 4000:80 -v $(pwd)/ui:/usr/share/nginx/html:ro --name ui nginx:1.21.5-alpine
+-Prüfen erreichbar? --> curl http://localhost:4000
+-Im Browser schauen http://localhost:4000
+----------------------Docker Compose------------------------
+-yml File bearbeiten
+-Unsere Container starten --> docker compose up -d <-- startete im Hintergrund
+-Prüfen ob die Laufen Unsere Container starten --> docker compose ps
+-Netwerke anschaun --> docker network ls
+-Stoppen --> docker compose kill
+-Aufräumen mit Netwerk und Container --> docker compose down
+-Um im yml Umgebungsvariablen zu benutzen muss ein .env Datei angelegt werden
+-Escapen von Zeichen, z.B brauhcht den $, dann $$ schreiben
+-Konfigurationen anzeigen --> docker compose config
+
+---------------------Zusatz-----------
+-Es können Profile erstellt werden im yml profiles: und dann -Name (unterhalb)
+-Beim Start werden die Profile gestartet mit  --> docker compose --profile NAME up -d ACHTUNG Container ohne Profile werden auch gestartet!
+-Netzwerke Konfigurieren mit networks: im yml
+
